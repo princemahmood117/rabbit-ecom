@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="container max-w-7xl mx-auto flex items-center justify-between py-4 px-3 md:px-0">
+      <nav className="container max-w-7xl mx-auto flex items-center justify-between px-2 md:px-0 py-4">
         {/* left side logo */}
         <div>
           <Link to={"/"} className="text-2xl font-medium">
@@ -58,7 +58,7 @@ const Navbar = () => {
         </div>
 
         {/* right side icon section */}
-        <div className="flex space-x-4 px-4">
+        <div className="flex space-x-4 ">
           <Link to={"/profile"} className="text-gray-700 hover:text-black">            
             <HiOutlineUser className="h-6 w-6 text-gray-700"></HiOutlineUser>
           </Link>
@@ -92,7 +92,7 @@ const Navbar = () => {
 
       {/* mobile navigation */}
       <div
-        className={`fixed top-0 left-0 w-3/4 sm:w-1/2 md:w-1/3 h-full bg-gray-200 shadow-lg transform transition-transform duration-300 ${
+        className={`fixed z-50 top-0 left-0 w-3/4 sm:w-1/2 md:w-1/3 h-full bg-gray-200 shadow-lg transform transition-transform duration-300 ${
           navDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
 

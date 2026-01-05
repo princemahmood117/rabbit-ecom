@@ -7,13 +7,8 @@ const Header = () => {
             {/* top bar */}
             <Topbar></Topbar>
 
-
             {/* navbar */}
             <Navbar></Navbar>
-
-
-
-            {/* card-drawer */}
         </header>
     );
 };
