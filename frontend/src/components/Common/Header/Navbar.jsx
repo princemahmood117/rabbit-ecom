@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* left side logo */}
         <div>
           <Link to={"/"} className="text-2xl font-medium">
-            Rabbit
+            R<span className="font-satisfy text-red-600">a</span>bbit
           </Link>
         </div>
 

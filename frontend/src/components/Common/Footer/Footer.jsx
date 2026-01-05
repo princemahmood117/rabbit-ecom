@@ -3,6 +3,7 @@ import { TbBrandInstagram, TbBrandMeta, TbBrandX } from "react-icons/tb";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+
     return (
         <footer className="border-t border-gray-300 py-12">
             <div className="container mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-8 px-4 md:px-0">
@@ -52,10 +53,14 @@ const Footer = () => {
                     </div>
 
                     <p className="text-gray-600 mb-2">Call Us</p>
-                    <p className="flex items-center gap-3"> <FiPhoneCall></FiPhoneCall> +880 1101010101</p>
-
-        
+                    <p className="flex items-center gap-3"> <FiPhoneCall></FiPhoneCall> +880 1101010101</p>        
                 </div>
+            </div>
+            {/* copyright */}
+            <div className="w-full text-center text-gray-800 mt-12 border-t pt-6 border-gray-200 text-sm">                
+                <p>
+                    © {new Date().getFullYear()} All rights reserved
+                </p>
             </div>
         </footer>
     );
