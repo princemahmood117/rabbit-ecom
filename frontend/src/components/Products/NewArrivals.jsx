@@ -100,54 +100,104 @@ const scrollRef = useRef(null)
 const [isDragging, setIsDragging] = useState(false)
 const [startX, setStartX] = useState(0)
 const [scrollLeft, setScrollLeft] = useState(false)
-const [canScrollRight, setCanScrollRight] = useState(true)
+const [canScrollRight, setCanScrollRight] = useState(false)
+const [canScrollLeft, setCanScrollLeft] = useState(true)
 
+
+const scroll = (direction) => {
+  const scrollAmount = direction === "left" ? -300 : 300;
+
+  scrollRef.current.scrollBy({left : scrollAmount, behaviour : "smooth"})
+}
 
 // update scroll buttons
 const updateScrollButtons = () => {
     const container = scrollRef.current;
-    console.log("from updateScrollButtons : ",{
+    console.log('container in function : ', container);
+
+    if(container) {
+      const leftScroll = container.scrollLeft;
+
+      const rightScrollable = container.scrollWidth > leftScroll + container.clientWidth
+
+      setCanScrollLeft(leftScroll > 0)
+      setCanScrollRight(rightScrollable)
+    }
+
+    console.log("from updateScrollButtons : ", {
         scrollLeft : container.scrollLeft,
         clientWidth : container.clientWidth,
-        containerScrollWidth : container.scrollWidth,
+        containerScrollWidth : container.scrollWidth,        
     });
 }
 
 
 useEffect(() => {
     const container = scrollRef.current;
-    console.log('container from useEffect : ', container);
     
     if(container) {
-        container.addEventListener("scroll", updateScrollButtons)
-        
+        container.addEventListener("scroll", updateScrollButtons)        
        updateScrollButtons()
+       return () => container.removeEventListener("scroll", updateScrollButtons) 
     }
-})
+},[])
 
+const handleMouseDown = (e) => {
+  setIsDragging(true)
+  setStartX(e.pageX - scrollRef.current.offsetLeft)
+  setScrollLeft(scrollRef.current.scrollLeft)
+}
+
+const handleMouseMove = (e) => {
+  if(!isDragging) return;
+  const x = e.pageX - scrollRef.current.offsetLeft;
+  const walk = x - startX;
+  scrollRef.current.scrollLeft = scrollLeft - walk
+}
+
+const handleMouseUp = () => {
+  setIsDragging(false)
+}
+
+const handleMouseLeave = () => {
+
+}
 
 
 
     return (
-        <section>
+        <section className='py-16 px-4 lg:px-0'>
             <div className='container text-center mb-10 relative max-w-7xl mx-auto'>
                 <h2 className='text-3xl font-bold mb-4'>Explore New Arrivals</h2>
                 <p className='text-lg text-gray-600 mb-8'>Discover the latest styles straight off the runway, freshly added to keep your wardrobe on the cutting edge of fashion</p>
 
                 {/* scroll buttons */}
                 <div className='absolute right-0 -bottom-7.5 flex space-x-2'>
-                    <button className='p-2 border border-gray-400 rounded-full bg-white text-gray-700'> <FiChevronLeft className='text-2xl'></FiChevronLeft> </button>
-                    <button className='p-2 border border-gray-400 rounded-full bg-white text-gray-700'> <FiChevronRight className='text-2xl'></FiChevronRight> </button>
+                    <button 
+                    disabled={!canScrollLeft} 
+                    onClick={()=> scroll("left")} 
+                    className={`p-2 border border-gray-400 rounded-full ${canScrollLeft ? "bg-white text-black cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}> <FiChevronLeft className='text-2xl'></FiChevronLeft> </button>
+
+                    <button 
+                    disabled={!canScrollRight} 
+                    onClick={()=> scroll('right')} 
+                    className={`p-2 border border-gray-400 rounded-full ${canScrollRight ? "bg-white text-black cursor-pointer" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}> <FiChevronRight className='text-2xl'></FiChevronRight> </button>
                 </div>
             </div>  
 
 
             {/* scrollable contents */}
-            <div ref={scrollRef} className='flex space-x-6 overflow-x-scroll max-w-7xl mx-auto container relative'>
+            <div
+             onMouseDown={handleMouseDown} 
+             onMouseMove={handleMouseMove}
+             onMouseUp={handleMouseUp}
+             onMouseLeave={handleMouseLeave}
+             ref={scrollRef} 
+             className={`flex space-x-6 overflow-x-scroll max-w-7xl mx-auto container relative ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}>
                 {
                     newArrivals.map((product) => (
                         <div key={product._id} className='min-w-full sm:min-w-[50%] lg:min-w-[30%] relative'>
-                            <img src={product?.images[0]?.url} alt={product?.images[0]?.altText || product?.name} className='w-full h-100 object-cover'/>
+                            <img draggable={false} src={product?.images[0]?.url} alt={product?.images[0]?.altText || product?.name} className='w-full h-100 object-cover'/>
 
                             <div className='text-white absolute bottom-0 right-0 left-0 backdrop-blur-sm p-4 rounded-b-lg '>
                                 <Link to={`/product/${product?._id}`} className='block'>
