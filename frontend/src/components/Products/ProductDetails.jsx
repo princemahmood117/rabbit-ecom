@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import ProductGrid from "./ProductGrid";
 
     const selectedProduct = {
         name : "Leather Jacket",
@@ -22,6 +24,46 @@ import { useEffect, useState } from "react";
 }
 
 
+const similarProducts = [
+  {
+    _id: 1,
+    name: "Classic Cotton T-Shirt",
+    price: 1299,
+    images: [
+      { url: "https://picsum.photos/500/500?random=1" },
+      
+    ],
+  },
+  {
+    _id: 2,
+    name: "Slim Fit Denim Jeans",
+    price: 2499,
+    images: [
+      { url: "https://picsum.photos/500/500?random=2" },
+    
+    ],
+  },
+  {
+    _id: 3,
+    name: "Casual Sneakers",
+    price: 3499,
+    images: [
+      { url: "https://picsum.photos/500/500?random=3" },
+    
+    ],
+  },
+  {
+    _id: 4,
+    name: "Leather Backpack",
+    price: 4599,
+    images: [
+      { url: "https://picsum.photos/500/500?random=4" },
+     
+    ],
+  },
+];
+
+
 
 const ProductDetails = () => {
 
@@ -32,6 +74,40 @@ const ProductDetails = () => {
             setMainImage(selectedProduct.images[0].url)
         }
     },[selectedProduct])
+
+    const [selectedSize,setSelectedSize] = useState("");
+    const [selectedColor, setSelectedColor] = useState("");
+    const [quantity,setQuantity] = useState(1)
+    const [isButtonDisabled,setIsButtonDisabled] = useState(false);
+
+
+
+    const handleQuantityChange = (action) => {
+        if(action === 'plus') {
+            setQuantity((prev) => prev + 1)            
+        }
+         if(action === 'minus' &&  quantity > 1) {
+            setQuantity((prev) => prev - 1)
+        }
+    }
+
+    const handleAddToCart = () => {
+        if(!selectedColor || !selectedSize) {
+            toast.error("Please select color and size before adding into cart", {
+                duration : 1000,
+            });
+            return;
+        }
+        
+        setIsButtonDisabled(true)
+
+        setTimeout(() => {
+            toast.success("Product added to cart!", {duration : 1000})
+            setIsButtonDisabled(false)
+        }, 500)
+    }
+
+
 
     return (
         <div className="p-6">
@@ -65,7 +141,7 @@ const ProductDetails = () => {
                     {/* mobile thumbnail */}
                     <div className="md:hidden space-x-4 flex overscroll-x-scroll mb-4">
                              {
-                            selectedProduct.images.map((image, index) => (
+                                selectedProduct.images.map((image, index) => (
                                 <img 
                                 onClick={()=> setMainImage(image.url)}
                                 key={index} 
@@ -87,7 +163,10 @@ const ProductDetails = () => {
                             <p className="text-gray-700 ">Color : </p>
                             <div className="flex  gap-2 mt-2">
                                 {selectedProduct.colors.map((color) => (
-                                    <button key={color} className="w-8 h-8 rounded-full border border-gray-500 cursor-pointer" style={{backgroundColor : color, filter : "brightness(0.5)"}}></button>
+                                    <button
+                                     onClick={()=> setSelectedColor(color)}
+                                     key={color}
+                                     className={`w-8 h-8 rounded-full border border-gray-500 cursor-pointer ${selectedColor === color ? "border-4 border-black" : "border-gray-300" }`} style={{backgroundColor : color, filter : "brightness(0.5)"}}></button>
                                 ))}
                             </div>
                         </div>
@@ -98,7 +177,10 @@ const ProductDetails = () => {
 
                             <div className="flex gap-2 mt-2">
                                 {selectedProduct.sizes.map((size) => (
-                                    <button key={size} className="px-4 py-2 rounded border border-gray-500 hover:bg-gray-200">{size}</button>
+                                    <button 
+                                    onClick={()=> setSelectedSize(size)}
+                                    key={size}
+                                    className={`px-4 py-2 rounded border border-gray-500  ${selectedSize === size ? "bg-black text-white" : "hover:bg-gray-200"}`}>{size}</button>
                                 ))}
                             </div>
                         </div>
@@ -107,14 +189,16 @@ const ProductDetails = () => {
                         <div className="mb-4">
                             <p className="text-gray-600"> Quantity : </p>
                             <div className="flex items-center space-x-4 mt-2">
-                                <button className="px-4 py-2 bg-gray-200 rounded text-lg cursor-pointer hover:bg-gray-300">-</button>
-                                <span className="text-lg">1</span>
-                                <button  className="px-4 py-2 bg-gray-200 rounded text-lg cursor-pointer hover:bg-gray-300">+</button>
+                                <button onClick={()=> handleQuantityChange('minus')} className="px-4 py-2 bg-gray-200 rounded text-lg cursor-pointer hover:bg-gray-300">-</button>
+                                <span className="text-lg">{quantity}</span>
+                                <button onClick={()=> handleQuantityChange('plus')} className="px-4 py-2 bg-gray-200 rounded text-lg cursor-pointer hover:bg-gray-300">+</button>
                             </div>
                         </div>
 
                         {/* add to cart button */}
-                        <button className="bg-red-700 text-white py-2 px-6 w-full rounded my-4 hover:bg-red-700/80 transition-all duration-250 cursor-pointer">Add to Cart</button>
+                        <button 
+                        disabled={isButtonDisabled}
+                        onClick={handleAddToCart} className={`bg-red-700 text-white py-2 px-6 w-full rounded my-4 hover:bg-red-700/80 transition-all duration-250  ${isButtonDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}>{isButtonDisabled ? "Adding..." : "Add to Cart"}</button>
 
                         {/* characteristics */}
                         <div className="mt-10 text-gray-700">
@@ -135,6 +219,18 @@ const ProductDetails = () => {
                         </div>
                     </div>
                 </div>
+
+
+
+
+                
+            {/* you also may like section */}
+            <div className="mt-20">
+                <h2 className="text-2xl text-center font-medium mb-4">You Also May Like</h2>
+                <ProductGrid similarProducts={similarProducts}></ProductGrid>
+            </div>
+
+
             </div>
         </div>
     );
