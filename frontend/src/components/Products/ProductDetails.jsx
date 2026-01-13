@@ -226,7 +226,7 @@ const ProductDetails = () => {
                 
             {/* you also may like section */}
             <div className="mt-20">
-                <h2 className="text-2xl text-center font-medium mb-4">You Also May Like</h2>
+                <h2 className="text-3xl text-center font-bold mb-4">You Also May Like</h2>
                 <ProductGrid similarProducts={similarProducts}></ProductGrid>
             </div>
 
