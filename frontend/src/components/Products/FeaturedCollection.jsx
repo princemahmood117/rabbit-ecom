@@ -15,7 +15,7 @@ const FeaturedCollection = () => {
                     <Link to={'/collection/all'} className="bg-black px-6 py-2 rounded-lg text-lg text-white hover:bg-gray-200 hover:text-black transition duration-250 cursor-pointer">Shop Now</Link>
                 </div>
 
-                {/* left side content */}
+                {/* Right side image */}
                 <div className="lg:w-1/2">
                     <img src={featured} alt="featured_image"
                     className="w-full h-full object-cover rounded-tr-md rounded-br-md" />
