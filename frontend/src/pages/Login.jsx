@@ -8,6 +8,7 @@ const Login = () => {
   
   return (
     <div className="">
+      {/* this is the login page for the rabbit ecom */}
       <div>this is login page </div>
     </div>
   );
