@@ -11,7 +11,7 @@ const Login = () => {
   console.log(password);
 
 
-  const handleFomSubmmit = (e) =>{
+  const handleLoginSubmmit = (e) =>{
     e.preventDefault()
     alert('form submmied')
   }
@@ -23,7 +23,7 @@ const Login = () => {
       
       <div className="w-full flex md:w-1/2 flex-col justify-center items-center p-8 md:p-10">
 
-        <form onSubmit={handleFomSubmmit} className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm">
+        <form onSubmit={handleLoginSubmmit} className="w-full max-w-md bg-white p-8 rounded-lg border shadow-sm">
 
           <h2 className="text-2xl font-bold text-center mb-6">Welcome to R<span className="text-red-600 font-satisfy">a</span>bbit</h2>
 
