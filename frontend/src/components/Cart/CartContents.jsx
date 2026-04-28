@@ -69,7 +69,9 @@ const CartContents = () => {
 
                 <div className="flex flex-col items-center">
                     <p>${product.price.toLocaleString()}</p>
-                    <button className="cursor-pointer"> <RiDeleteBin3Line className="h-5 w-5 mt-2 text-red-400"></RiDeleteBin3Line> </button>
+                    <button className="cursor-pointer"> 
+                      <RiDeleteBin3Line className="h-5 w-5 mt-2 text-red-400"></RiDeleteBin3Line>
+                    </button>
                 </div>
             </div>
         ))
