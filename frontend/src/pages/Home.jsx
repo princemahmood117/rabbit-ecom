@@ -21,7 +21,7 @@ const placeholderProducts = [
     name: "Slim Fit Denim Jeans",
     price: 2499,
     images: [
-      { url: "https://picsum.photos/500/500?random=2" },   
+      { url: "https://picsum.photos/500/500?random=2" },
     ],
   },
   {
@@ -57,6 +57,8 @@ const placeholderProducts = [
     ],
   },
 ]
+
+
 
 
 const Home = () => {

@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FaFilter } from 'react-icons/fa';
 import FilterSidebar from '../components/Products/FilterSidebar';
+import SortOptions from '../components/Products/SortOptions';
+import ProductGrid from '../components/Products/ProductGrid';
 
 const CollectionPage = () => {
 
     const [products,setProducts] = useState([])
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+    console.log(products);
 
     const sidebarRef = useRef(null)
-    console.log("sidebar ref ", sidebarRef);
 
 
     useEffect(()=> {
@@ -64,9 +66,11 @@ const CollectionPage = () => {
   },
 ]
 setProducts(fetchProducts)
-}, 1000)
+},1000)
 
 },[])
+
+
 
 
 const toggleSidebar = () => {
@@ -84,22 +88,36 @@ const handleClickOutside = (e) => {
 
 // add event listener for clicks
 useEffect(() => {    
-    document.addEventListener('mousedown', handleClickOutside)
-})
+    if(isSidebarOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside) // clear the event listener
+    }
+},[isSidebarOpen])
 
 
 
 
     return (
         <div className='flex flex-col lg:flex-row'>
-            {/* mobile filter button */}
-            <button className='lg:hidden border p-2 flex justify-center items-center'>
-                <FaFilter className='mr-2'></FaFilter>
+            {/* mobile filter icon */}
+            <button onClick={toggleSidebar} className='lg:hidden border p-2 flex justify-center items-center'>
+                <FaFilter className='mr-2'/> Filters
             </button>
 
-            {/* filter sidebar */}
-            <div ref={sidebarRef}>
-                <FilterSidebar></FilterSidebar>
+            {/* filter sidebar opens in small devices when icon is clicked*/}
+            <div ref={sidebarRef} className={`fixed inset-y-0 z-50 w-64 bg-white overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+                <FilterSidebar/>
+            </div>
+
+            <div className='grow p-3'>
+              <h2 className='text-2xl uppercase mb-4'>All Collections</h2>
+
+              {/* sort options */}
+              <SortOptions></SortOptions>
+
+              <ProductGrid similarProducts={products}></ProductGrid>
             </div>
         </div>
     );
