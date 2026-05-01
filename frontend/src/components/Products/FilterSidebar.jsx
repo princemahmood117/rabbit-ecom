@@ -205,6 +205,7 @@ const FilterSidebar = () => {
                     <span>${priceRanze[1]}</span>
                  </div>
             </div>
+            {/* filter section ends */}
 
 
         </div>
