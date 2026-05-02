@@ -206,6 +206,7 @@ const FilterSidebar = () => {
                  </div>
             </div>
             {/* filter section ends */}
+        {/* this is a random text */}
 
 
         </div>
